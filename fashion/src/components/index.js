@@ -11,4 +11,4 @@ export {
     AIpicker,
     ColorPicker,
     FilePicker
-    };
+};

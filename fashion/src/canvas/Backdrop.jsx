@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { AccumulativeShadows,RandomizedLight } from '@react-three/drei'
 
-
+  
 const BackDrop = () => {
   const shadows=useRef();
 

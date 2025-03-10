@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import config from '../config/config'
 import state from '../store'
-import {download} from '../assets';
+import {download, logoShirt, stylishShirt} from '../assets';
 import {downloadCanvasToImage,reader} from '../config/helpers';
 import {EditorTabs,FilterTabs,DecalTabs} from '../config/constants'
 import {fadeAnimation,slideAnimation} from '../config/motion';
@@ -9,16 +9,43 @@ import { useSnapshot } from 'valtio'
 import { motion,AnimatePresence } from 'framer-motion'
 import { AIpicker,ColorPicker,CustomButton,FilePicker,Tab } from '../components';
 
-
 const Customizer = () => {
+
   const snap =useSnapshot(state);
+  const [file,setFile]=useState('');
+  const [prompt,setPrompt]=useState('');
+  const [generatingImg,setGeneratingContent]=useState(false);
+  const [activeEditorTab,setActiveEditorTab]=useState("");
+  const [activeFilterTab,setActiveFilterTab] = useState({
+    logoShirt:true,
+    stylishShirt:false
+  })
+
+  const generateTabContent = () => {
+    switch (activeEditorTab) {
+      case "colorpicker":
+        return <ColorPicker/>
+
+      case "filepicker":
+        return <FilePicker/>
+      
+      case "aipicker":
+        return <AIpicker/>
+    
+      default:
+        return null;
+    }
+  }
+
+
+
   return (
     <AnimatePresence>
       {!snap.intro && (
         <>
           <motion.div
             key="custom"
-            classname="absolute top-0 left-0 z-10"
+            className="absolute top-0 left-0 z-10"
             {...slideAnimation('left')}
           >
             <div className='flex items-center min-h-screen'>
@@ -27,9 +54,10 @@ const Customizer = () => {
                   <Tab 
                     key={tab.name}
                     tab={tab}
-                    handleClick={()=>{}}
+                    handleClick={()=>setActiveEditorTab(tab.name)}
                   />
                 ))}
+              {generateTabContent()}
               </div>
             </div>
           </motion.div>
