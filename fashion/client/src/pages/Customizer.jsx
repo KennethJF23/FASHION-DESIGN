@@ -48,42 +48,36 @@ const Customizer = () => {
   }
 
   const handleSubmit = async (type) => {
-    if(!prompt) return alert("Please enter a prompt");
-
+    if (!prompt) return alert("Please enter a prompt");
+  
     try {
       setGeneratingImg(true);
-
-      const response = await fetch('http://localhost:5001/api/v1/dalle', {
-        method: 'POST',
+  
+      const response = await fetch("http://localhost:5001/api/v1/dalle", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          prompt,
-        })
-      })
-
+        body: JSON.stringify({ prompt }),
+      });
+  
       const data = await response.json();
-
-      handleDecals(type, `data:image/png;base64,${data.photo}`)
+      console.log("API Response:", data); // Debugging
+  
+      if (!data.photo) {
+        throw new Error("API did not return a valid image");
+      }
+  
+      handleDecals(type, `data:image/png;base64,${data.photo}`);
     } catch (error) {
-      alert(error)
+      console.error("Fetch error:", error);
+      alert(`Error: ${error.message}`);
     } finally {
       setGeneratingImg(false);
       setActiveEditorTab("");
     }
-  }
-
-  const handleDecals = (type, result) => {
-    const decalType = DecalTypes[type];
-
-    state[decalType.stateProperty] = result;
-
-    if(!activeFilterTab[decalType.filterTab]) {
-      handleActiveFilterTab(decalType.filterTab)
-    }
-  }
-
+  };
+  
   const handleActiveFilterTab = (tabName) => {
     switch (tabName) {
       case "logoShirt":
