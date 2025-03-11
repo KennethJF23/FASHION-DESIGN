@@ -3,7 +3,7 @@ import config from '../config/config'
 import state from '../store'
 import {download, logoShirt, stylishShirt} from '../assets';
 import {downloadCanvasToImage,reader} from '../config/helpers';
-import {EditorTabs,FilterTabs,DecalTabs} from '../config/constants'
+import {EditorTabs,FilterTabs,DecalTypes} from '../config/constants'
 import {fadeAnimation,slideAnimation} from '../config/motion';
 import { useSnapshot } from 'valtio'
 import { motion,AnimatePresence } from 'framer-motion'
@@ -14,7 +14,7 @@ const Customizer = () => {
   const snap =useSnapshot(state);
   const [file,setFile]=useState('');
   const [prompt,setPrompt]=useState('');
-  const [generatingImg,setGeneratingContent]=useState(false);
+  const [generatingImg,setGeneratingImg]=useState(false);
   const [activeEditorTab,setActiveEditorTab]=useState("");
   const [activeFilterTab,setActiveFilterTab] = useState({
     logoShirt:true,
@@ -27,17 +27,78 @@ const Customizer = () => {
         return <ColorPicker/>
 
       case "filepicker":
-        return <FilePicker/>
+        return <FilePicker
+          file={file}
+          setFile={setFile}
+          readFile={readfile}
+        />
+          
       
       case "aipicker":
-        return <AIpicker/>
+        return <AIpicker
+          prompt={prompt}
+          setPrompt={setPrompt}
+          generatingImg={generatingImg}
+          handleSubmit={handleSubmit}
+        />
     
       default:
         return null;
     }
   }
 
+const handleSubmit = async(type) => {
+  if(!prompt) return alert("Please enter prompt");
 
+  try{
+
+  }catch(error){
+    alert(error);
+  } finally{
+    setGeneratingImg(false);
+    setActiveEditorTab("");
+  }
+}
+
+
+  const handleDecals  = (type,result) => {
+    const decalType = DecalTypes[type];
+
+    state[decalType.stateProperty]=result;
+
+    if(!activeFilterTab[decalType.filterTab]){
+      handleActiveFilterTab(decalType.filterTab)
+    }
+  }
+
+  const handleActiveFilterTab = (tabName) => {
+    switch (tabName) {
+      case "logoShirt":
+          state.isLogoTexture = !activeFilterTab[tabName];
+        break;
+      case "stylishShirt":
+          state.isFullTexture = !activeFilterTab[tabName];
+        break;
+      default:
+          state.isLogoTexture=true;
+          state.isFullTexture=false;
+        break;
+    }
+
+    setActiveFilterTab((prevState)=>{
+      return {
+        ...prevState,
+        [tabName]:!prevState[tabName]
+      }
+    })
+  }
+
+  const readfile = (type) => {
+    reader(file).then((result)=>{
+      handleDecals(type,result);
+      setActiveEditorTab(""); 
+    })
+  }
 
   return (
     <AnimatePresence>
@@ -82,8 +143,8 @@ const Customizer = () => {
                 key={tab.name}
                 tab={tab}
                 isFilterTab
-                isActiveTab=""
-                handleClick={()=>{}}
+                isActiveTab={activeFilterTab[tab.name]}
+                handleClick={()=>handleActiveFilterTab(tab.name)}
               />
             ))}
 
