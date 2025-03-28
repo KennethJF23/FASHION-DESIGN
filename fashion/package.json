@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "openai": "^4.86.2"
+    "openai": "^4.86.2",
+    "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "sass-embedded": "^1.86.0"
   }
 }

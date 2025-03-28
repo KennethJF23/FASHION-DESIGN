@@ -1,0 +1,73 @@
+import React from 'react';
+import '../App.scss'
+import { Link } from 'react-router-dom';
+
+import { FaUserShield } from 'react-icons/fa';
+import { MdMarkEmailRead } from "react-icons/md";
+import { AiOutlineSwapRight } from "react-icons/ai";
+
+const Register = () => {  // Changed component name from Login to Register
+  return (
+    <div className="registerPage flex">
+      <div className="container flex">
+        <div className="videoDiv">
+          <video src="/AI.mp4" autoPlay muted loop></video>
+          <div className="textDiv">
+            <h2 className="title">Create Your Imagination</h2>
+            <p className="subTitle">Lessgo CustomWear 3D</p>
+          </div>
+          <div className="footerDiv flex">
+            <span className="text">Already have an account?</span> {/* Changed text */}
+            <Link to="/login" className="btn"> {/* Changed to /login */}
+              Login
+            </Link>
+          </div>
+        </div>
+
+        <div className="formDiv flex">
+          <div className="headerDiv">
+           
+           <h3>Let us know</h3> {/* Changed text to make sense for registration */}
+          </div>
+
+          <form className="form grid">
+            <div className="inputDiv">
+              <label htmlFor="email">Email</label>
+              <div className="input flex">
+                <MdMarkEmailRead className="icon" /> {/* Changed to email icon */}
+                <input type="email" id="email" placeholder="Enter Email" />
+              </div>
+            </div>
+
+            <div className="inputDiv">
+              <label htmlFor="username">Username</label> {/* Added username field */}
+              <div className="input flex">
+                <FaUserShield className="icon" />
+                <input type="text" id="username" placeholder="Enter Username" />
+              </div>
+            </div>
+
+            <div className="inputDiv">
+              <label htmlFor="password">Password</label>
+              <div className="input flex">
+                <AiOutlineSwapRight className="icon" /> {/* Changed icon */}
+                <input type="password" id="password" placeholder="Enter Password" />
+              </div>
+            </div>
+
+            <button type="submit" className="btn flex">
+              <span>Register</span>
+              <AiOutlineSwapRight className="icon" />
+            </button>
+
+            <span className="forgotPassword">
+              Already have an account? <Link to="/login">Login Here</Link> {/* Changed text */}
+            </span>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Register; // Changed to match component name

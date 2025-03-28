@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion,AnimatePresence } from 'framer-motion';
 import {useSnapshot} from 'valtio';
+import { useNavigate } from 'react-router-dom';
 import { CustomButton } from '../components';
 import {
   headContainerAnimation,
@@ -9,15 +10,24 @@ import {
   slideAnimation
 } from '../config/motion';
 import state from '../store';
-
+import Login from './Login';
 const Home = () => {
   const snap = useSnapshot(state);
+  const navigate = useNavigate();
+
+
   return (
     <AnimatePresence>
       {snap.intro && (
         <motion.section className='home' {...slideAnimation('left')}>
-          <motion.header>
+          <motion.header className='flex gap-10'>
             <img src='./threejs.png' alt='logo' className='w-8 h-8 object-contain'/>
+            <CustomButton
+            type='filled'
+            title='Login/Sign Up'
+            handleClick={()=>navigate('/login')}
+            customStyles='w-fit px-4 py-2.5 font-bold text-sm'
+          />
           </motion.header>
          <motion.div className='home-content' {...headContainerAnimation}>
             <motion.div {...headTextAnimation}>  
