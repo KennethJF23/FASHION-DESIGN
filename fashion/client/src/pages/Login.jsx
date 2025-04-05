@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../App.scss'; // Changed to import SCSS instead of CSS
 import { Link } from 'react-router-dom'; // Fixed NavLink typo
 import '/AI.mp4'
 import { FaUserShield } from 'react-icons/fa';
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { AiOutlineSwapRight } from "react-icons/ai";
+import  Axios  from 'axios';
+
 
 const Login = () => {
+
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+
+
   return (
     <div className="loginPage flex">
       <div className="container flex">
@@ -36,7 +43,7 @@ const Login = () => {
               <label htmlFor="username">Username</label>
               <div className="input flex">
                 <FaUserShield className="icon" />
-                <input type="text" id="username" placeholder="Enter Username" />
+                <input type="text" id="username" placeholder="Enter Username" onChange={(e)=>{setEmail(e.target.value)}}/>
               </div>
             </div>
 
@@ -44,18 +51,14 @@ const Login = () => {
               <label htmlFor="password">Password</label>
               <div className="input flex">
                 <BsFillShieldLockFill className="icon" />
-                <input type="password" id="password" placeholder="Enter Password" />
+                <input  type="password" id="password" placeholder="Enter Password" onChange={(e)=>{setPassword(e.target.value)}}/>
               </div>
             </div>
 
             <button type="submit" className="btn flex">
               Login
               <AiOutlineSwapRight className="icon" />
-            </button>
-
-            <span className="forgotPassword">
-              Forget your password? <Link to="/reset">Click Here</Link>
-            </span>
+            </button> 
           </form>
         </div>
       </div>
