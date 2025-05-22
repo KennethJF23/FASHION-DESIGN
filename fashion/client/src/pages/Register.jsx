@@ -5,22 +5,32 @@ import { FaUserShield } from 'react-icons/fa';
 import { MdMarkEmailRead } from "react-icons/md";
 import { AiOutlineSwapRight } from "react-icons/ai";
 import Axios from 'axios'
+import axios from 'axios';
 const Register = () => {  // Changed component name from Login to Register
   
   const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
+  const [users, setUsers] = useState([]); 
   
-  const createUser = () => {
-    Axios.post('http://localhost:8081/register',{
-      Username:username,
-      Password:password
-    }).then(()=>{
-      console.log('User has been created ')
-    })
+  const createUser = (e) => {
+      e.preventDefault();
+      axios.post('http://localhost:3001/register',{username,password}).then(result=>console.log(result)).catch(err=>console.log(err));
+      e.preventDefault();
+
+      const newUser = { username, password };
+  
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+  
+      users.push(newUser);
+
+      localStorage.setItem('users', JSON.stringify(users));
+  
+      console.log('User registered:', newUser);
+
   }
   
   return (
-    <div className="registerPage flex">
+      <div className="registerPage flex">
       <div className="container flex">
         <div className="videoDiv">
           <video src="/AI.mp4" autoPlay muted loop></video>

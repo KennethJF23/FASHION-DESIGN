@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/v1/dalle", dalleRoutes); // Ensure this is correctly set up!
+app.use("http://localhost:5002/api/v1/dalle", dalleRoutes); // Ensure this is correctly set up!
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5003;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

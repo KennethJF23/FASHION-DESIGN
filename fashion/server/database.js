@@ -1,37 +1,19 @@
 const express = require('express');
-const mysql = require('mysql')
-const cors = require('cors')
+const mongoose = require('mongoose')
+const cors = require('cors');
+const UserModel = require('./models/FASHION');
+
 
 const app = express();
 app.use(express.json())
 app.use(cors());
 
+mongoose.connect("mongodb://localhost:27017/FASHION")
 
-const db = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"Ken@23190",
-    database:"fashion_ai",
-})
-
-app.listen(8081,()=>{
-    console.log("Listening...");
+app.listen(3001,()=>{
+    console.log("Server is running");
 })
 
 app.post('/register', (req, res) => {
-    const sentUsername = req.body.UserName;
-    const sentPassword = req.body.Password;
-
-    const SQL = 'INSERT INTO users (username, password) VALUES (?, ?)';
-    const Values = [sentUsername, sentPassword];
-
-    db.query(SQL, Values, (err, results) => {
-        if (err) {
-            console.error(" Database Insert Error:", err);
-            return res.status(500).send({ error: "Database error", details: err });
-        }
-
-        console.log('User inserted successfully');
-        res.status(201).send({ message: 'User Added!' });
-    });
+    UserModel.create(req.body).then(users=>res.json(users)).catch(err=>res.json(err))
 });
